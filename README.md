@@ -1,9 +1,15 @@
-# prueba-mca-jose
+# Prueba técnica prodcuto - José Hernández Rizo
+
+## Consideraciones
+En el fichero hoja-de-trabajo.txt se responden a las preguntas enunciadas en la hoja prueba.txt y también se realizan 
+diversas aclaraciones que considero importantes a la hora de evaluar una prueba como esta. Mi intención es 
+que la persona que lea este fichero pueda ver que razonamientos he seguido a la hora de programar para ver si
+estos son compatibles con la cultura y estándares de programación de la empresa.
 
 ## Requisitos necesarios:
 - Java version 17
 - Docker
-- Maven v.3.8 >
+- Maven v.3.8 / v.3.9 
 
 ## Instalación
 

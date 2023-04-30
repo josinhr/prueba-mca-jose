@@ -84,7 +84,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         for (ProductEntity product : products) {
             List<ProductSizeEntity> productSizes = sizes.get(product.getId());
             for (ProductSizeEntity productSize : productSizes) {
-                productSize.setStock(stocks.get(productSize.getProductId()));
+                productSize.setStock(stocks.get(productSize.getId()));
             }
             product.getSizes().addAll(productSizes);
 

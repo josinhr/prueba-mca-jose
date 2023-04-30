@@ -1,0 +1,48 @@
+Una vez realizada la implementación de la estructura básica la aplicación, vamos a comenzar a implementar el algoritmo de 
+filtrado y ordenación usando TDD. Para ello usaremos la siguiente técnica:
+    1. Escribimos test
+    2. El test falla
+    3. Implementamos la funcionalidad
+    4. El test pasa
+    5. Refactorizamos el código y volvemos a empezar
+
+Vamos a ir realizando diversas iteraciones con el objetivo de poder aportar valor desde la primera iteración
+y poder ir realizando mejoras en el código progresivamente. Al algoritmo lo hemos llamado filterNonAviableAndOrderProducts.
+
+No considero la implementación del repositorio ni dentro de la complejidad del algoritmo ni dentro del objetivo principal de la prueba.
+Como se indica en el fichero de explicación, los ficheros CSV simplemente simulan las tablas de una BDD,
+a la cual en un ejemplo real podríamos acceder mediante un ORM o mappings que nos aportarían directamente las entidades.
+
+ITERACIÓN 1:
+    Una primera iteración en la que hemos ido implementando cada una de las reglas descritas en la prueba
+    usando la ténica de TDD que ya hemos mencionado. Se ha intentado realizar una arquitectura sencilla pero que al 
+    mismo tiempo respete cierta limpieza y permita un cierto grado de extensibilidad. También decir que se podría
+    haber realizado un enfoque más "algorítmico", como en las pruebas de C++ o Python, en el que con la entrada de los
+    ficheros directamente realizaramos el calculo y devolvieramos la solución. En este caso creo que se perdería la semántica y
+    la abstracción que nos da Java y la Programación Orientada a Objetos. 
+
+    Ahora toca responder las preguntas sobre el algoritmo filterNonAviableAndOrderProducts. 
+
+    - ¿Estructuras de datos utilizadas en el algoritmo? 
+    
+    Aunque previamente ya he dicho que no hablaría de los repositorios, simplementemecionar
+    que se han utilizado Maps en la lectura de los ficheros CSV para poder acelerar la relación
+    entre los objetos con un mismo id (el id se usaba como la clave).
+
+    Si no, en este primera iteración del método filterNonAviableAndOrderProducts los productos
+    se reciben por parámetro en forma de lista de productos y se devuelven en forma de lista de
+    enteros como la solución.
+
+    - ¿Qué complejidad temporal expresada en notación “O” crees que tiene? 
+
+    La complejidad que tendria el algoritmo filterNonAviableAndOrderProducts sería O( n + 3m ),
+    siendo n el número de filas del fichero sizes.csv y m las filas de products.csv, ya que lo que se hace es recorrer los 
+    sizes de cada uno de los productos, después se ordenan los m productos y después se extran los ids de los m productos.
+
+    - ¿Consideras que se podría mejorar de alguna manera?
+
+    Creo que cambiando las estructuras de datos (a un Map que tuviera ya los ids) e intentando obtener los productos ya 
+    ordenados en la BDD podríamos reducir el orden a O(n).
+
+
+ITERACIÓN 2:

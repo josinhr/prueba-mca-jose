@@ -1,12 +1,16 @@
 package com.mca.pruebaproducto.service.impl;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mca.pruebaproducto.entity.ProductEntity;
+import com.mca.pruebaproducto.entity.ProductSizeEntity;
 import com.mca.pruebaproducto.repository.ProductRepository;
 import com.mca.pruebaproducto.service.ProductService;
 
@@ -23,9 +27,51 @@ public class ProductServiceImpl implements ProductService {
         return aviableProducts;
     }
 
-    private List<Integer> filterNonAviableAndOrderProducts(List<ProductEntity> products) {
+    @Override
+    public List<Integer> filterNonAviableAndOrderProducts(List<ProductEntity> products) {
 
-        return new LinkedList<>();
+        if (products == null || products.isEmpty())
+            return new LinkedList<>();
+
+        List<ProductEntity> aviableProducts = new LinkedList<>();
+
+        for (ProductEntity product : products) {
+            if (isProductAviable(product))
+                aviableProducts.add(product);
+        }
+
+        return orderAndListOfProductIds(aviableProducts);
+    }
+
+    private List<Integer> orderAndListOfProductIds(List<ProductEntity> aviableProducts) {
+        Collections.sort(aviableProducts, (p1, p2) -> p1.getSequence().compareTo(p2.getSequence()));
+
+        List<Integer> orderedFilteredProducts = aviableProducts.stream().map(p -> p.getId())
+                .collect(Collectors.toList());
+        return orderedFilteredProducts;
+    }
+
+    private boolean isProductAviable(ProductEntity product) {
+        if (product.getSizes().isEmpty())
+            return false;
+
+        boolean productHasStockInNormal = false;
+        boolean productHasStockInSpecial = false;
+        boolean productIsSpecial = false;
+
+        for (ProductSizeEntity size : product.getSizes()) {
+            productIsSpecial = productIsSpecial || size.isSpecial();
+
+            productHasStockInNormal = productHasStockInNormal
+                    || (!size.isSpecial() && size.getStock() != null
+                            && (size.getStock().getQuantity() > 0 || size.isBackSoon()));
+            productHasStockInSpecial = productHasStockInSpecial
+                    || (size.isSpecial() && size.getStock() != null
+                            && (size.getStock().getQuantity() > 0 || size.isBackSoon()));
+
+        }
+        return productIsSpecial ? productHasStockInNormal && productHasStockInSpecial : productHasStockInNormal;
+
     }
 
 }
