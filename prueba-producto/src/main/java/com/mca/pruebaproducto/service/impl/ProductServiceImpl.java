@@ -51,6 +51,12 @@ public class ProductServiceImpl implements ProductService {
         return orderedFilteredProducts;
     }
 
+    /**
+     * Este método realmente no debería encontrarse en el servicio. Debería poder
+     * moverse
+     * a una clase de dominio ya que es una de las reglas de nuestro modelo de
+     * negocio.
+     */
     private boolean isProductAviable(ProductEntity product) {
         if (product.getSizes().isEmpty())
             return false;
