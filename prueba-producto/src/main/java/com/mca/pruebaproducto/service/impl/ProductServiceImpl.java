@@ -40,10 +40,10 @@ public class ProductServiceImpl implements ProductService {
                 aviableProducts.add(product);
         }
 
-        return orderAndListOfProductIds(aviableProducts);
+        return orderAndGetListOfProductIds(aviableProducts);
     }
 
-    private List<Integer> orderAndListOfProductIds(List<ProductEntity> aviableProducts) {
+    private List<Integer> orderAndGetListOfProductIds(List<ProductEntity> aviableProducts) {
         Collections.sort(aviableProducts, (p1, p2) -> p1.getSequence().compareTo(p2.getSequence()));
 
         List<Integer> orderedFilteredProducts = aviableProducts.stream().map(p -> p.getId())
