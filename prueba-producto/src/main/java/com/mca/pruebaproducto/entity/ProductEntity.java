@@ -4,14 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ProductEntity {
+    private Integer id;
+    private Integer sequence;
+    private List<ProductSizeEntity> sizes = new LinkedList<>();
+
     public ProductEntity(Integer id, Integer sequence) {
         this.id = id;
         this.sequence = sequence;
     }
-
-    private Integer id;
-    private Integer sequence;
-    private List<ProductSizeEntity> sizes = new LinkedList<>();
 
     public List<ProductSizeEntity> getSizes() {
         return sizes;

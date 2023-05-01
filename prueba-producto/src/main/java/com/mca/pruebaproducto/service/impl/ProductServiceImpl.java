@@ -1,6 +1,5 @@
 package com.mca.pruebaproducto.service.impl;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,11 +16,14 @@ import com.mca.pruebaproducto.service.ProductService;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    /**
+     * The repository of products.
+     */
     @Autowired
     private ProductRepository productRepository;
 
     @Override
-    public List<Integer> getOrderedAviableProcducts() throws IOException {
+    public List<Integer> getOrderedAviableProcducts() {
         List<ProductEntity> products = productRepository.getAllProducts();
         List<Integer> aviableProducts = filterNonAviableAndOrderProducts(products);
         return aviableProducts;
@@ -56,6 +58,13 @@ public class ProductServiceImpl implements ProductService {
      * moverse
      * a una clase de dominio ya que es una de las reglas de nuestro modelo de
      * negocio.
+     */
+    /**
+     * This method receives a product and returns if it's aviable according to
+     * bussines rules.
+     * 
+     * @param product that we want to determine.
+     * @return if the product is aviable or not.
      */
     private boolean isProductAviable(ProductEntity product) {
         if (product.getSizes().isEmpty())

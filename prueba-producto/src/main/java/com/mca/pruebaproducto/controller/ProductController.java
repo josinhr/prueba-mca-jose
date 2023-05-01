@@ -1,6 +1,5 @@
 package com.mca.pruebaproducto.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,21 @@ import com.mca.pruebaproducto.service.ProductService;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
+
+    /**
+     * Service that manages products.
+     */
     @Autowired
     private ProductService productService;
 
+    /**
+     * Call that get aviable products Ids ordere by their sequence number.
+     * 
+     * @return a list of aviable product Ids
+     */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Integer> getProducts() throws IOException {
+    public List<Integer> getProducts() {
         return productService.getOrderedAviableProcducts();
     }
 }

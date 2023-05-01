@@ -91,41 +91,6 @@ public class ProductServiceTests {
     }
 
     @Test
-    @Description("Case when products one product with stock")
-    void filterNonAviableAndOrderProductsOneStock() throws IOException {
-
-        List<ProductEntity> products = new LinkedList<>();
-
-        SizeStockEntity sa = new SizeStockEntity(0, 1);
-
-        ProductSizeEntity pa = new ProductSizeEntity(0, 0, false, false);
-        pa.setStock(sa);
-        List<ProductSizeEntity> sizesa = new LinkedList<>();
-        sizesa.add(pa);
-
-        ProductEntity a = new ProductEntity(0, 2);
-        a.setSizes(sizesa);
-        products.add(a);
-
-        SizeStockEntity sb = new SizeStockEntity(1, 0);
-
-        ProductSizeEntity pb = new ProductSizeEntity(1, 1, false, false);
-        pb.setStock(sb);
-        List<ProductSizeEntity> sizesb = new LinkedList<>();
-        sizesb.add(pb);
-
-        ProductEntity b = new ProductEntity(1, 2);
-        b.setSizes(sizesb);
-        products.add(b);
-
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
-        assertTrue(!productsIds.isEmpty());
-        assertTrue(productsIds.size() == 1);
-        assertEquals(productsIds.get(0), 0);
-
-    }
-
-    @Test
     @Description("Case when products two product with stock")
     void filterNonAviableAndOrderProductsTwoStock() throws IOException {
 
@@ -155,9 +120,9 @@ public class ProductServiceTests {
 
         List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
         assertTrue(!productsIds.isEmpty());
-        assertTrue(productsIds.size() == 2);
-        assertEquals(productsIds.get(0), 1);
-        assertEquals(productsIds.get(1), 0);
+        assertEquals(2, productsIds.size());
+        assertEquals(1, productsIds.get(0));
+        assertEquals(0, productsIds.get(1));
 
     }
 
@@ -182,8 +147,8 @@ public class ProductServiceTests {
 
         List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
         assertTrue(!productsIds.isEmpty());
-        assertTrue(productsIds.size() == 1);
-        assertEquals(productsIds.get(0), 3);
+        assertEquals(1, productsIds.size());
+        assertEquals(3, productsIds.get(0));
 
     }
 
@@ -235,8 +200,8 @@ public class ProductServiceTests {
         List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
 
         assertTrue(!productsIds.isEmpty());
-        assertTrue(productsIds.size() == 1);
-        assertEquals(productsIds.get(0), 3);
+        assertEquals(1, productsIds.size());
+        assertEquals(3, productsIds.get(0));
 
     }
 

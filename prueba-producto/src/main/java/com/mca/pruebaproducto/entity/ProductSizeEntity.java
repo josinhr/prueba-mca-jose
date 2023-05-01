@@ -5,7 +5,6 @@ public class ProductSizeEntity {
     private Integer productId;
     private boolean backSoon;
     private boolean special;
-
     private SizeStockEntity stock;
 
     public ProductSizeEntity(Integer id, Integer productId, boolean backSoon, boolean special) {

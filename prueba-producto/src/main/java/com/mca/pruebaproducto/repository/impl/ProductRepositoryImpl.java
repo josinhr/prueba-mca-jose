@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,9 @@ import com.mca.pruebaproducto.repository.ProductRepository;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    public final static String COMMA_DELIMITER = ", ";
+    Logger logger = Logger.getLogger(ProductRepositoryImpl.class.getName());
+
+    private static final String COMMA_DELIMITER = ", ";
 
     @Autowired
     private ResourceLoader resourceLoader;
@@ -44,7 +47,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             sizeURL = sizeResource.getURL().getFile();
             stockURL = stockResource.getURL().getFile();
         } catch (IOException e) {
-            System.err.println("Error: Alguno de los ficheros no ha sido encontrado");
+            logger.warning("Error: Alguno de los ficheros no ha sido encontrado");
             return new LinkedList<>();
         }
 
@@ -59,20 +62,27 @@ public class ProductRepositoryImpl implements ProductRepository {
         Map<Integer, List<ProductSizeEntity>> sizes = new HashMap<>();
         Map<Integer, SizeStockEntity> stocks = new HashMap<>();
 
-        try {
-            products = loadProducts(productURL);
+        try (Scanner productScanner = new Scanner(
+                new File(productURL));
+                Scanner sizeScanner = new Scanner(
+                        new File(sizeURL));
+                Scanner stockScanner = new Scanner(
+                        new File(stockURL))) {
 
-            sizes = loadSizes(sizeURL);
+            products = loadProducts(productScanner);
 
-            stocks = loadStocks(stockURL);
+            sizes = loadSizes(sizeScanner);
+
+            stocks = loadStocks(stockScanner);
 
         } catch (FileNotFoundException e) {
-            System.err.println("Error: Alguno de los ficheros no ha sido encontrado");
+            logger.warning("Error: Alguno de los ficheros no ha sido encontrado");
             return new LinkedList<>();
         } catch (NumberFormatException e) {
-            System.err.println("Error: Ha habido un problema en la lectura de los ficheros");
+            logger.warning("Error: Ha habido un problema en la lectura de los ficheros");
             return new LinkedList<>();
         }
+
         fillProductsWithSizesAndStocks(products, sizes, stocks);
 
         return products;
@@ -91,11 +101,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
     }
 
-    private List<ProductEntity> loadProducts(String productURL) throws FileNotFoundException {
+    private List<ProductEntity> loadProducts(Scanner productScanner) {
         List<ProductEntity> products = new LinkedList<>();
 
-        Scanner productScanner = new Scanner(
-                new File(productURL));
         while (productScanner.hasNextLine()) {
             List<String> productProperties = getRecordFromLine(productScanner.nextLine());
             ProductEntity product = new ProductEntity(Integer.parseInt(productProperties.get(0)),
@@ -106,11 +114,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         return products;
     }
 
-    private Map<Integer, List<ProductSizeEntity>> loadSizes(String sizeURL) throws FileNotFoundException {
+    private Map<Integer, List<ProductSizeEntity>> loadSizes(Scanner sizeScanner) {
         Map<Integer, List<ProductSizeEntity>> sizes = new HashMap<>();
 
-        Scanner sizeScanner = new Scanner(
-                new File(sizeURL));
         while (sizeScanner.hasNextLine()) {
 
             List<String> sizeProperties = getRecordFromLine(sizeScanner.nextLine());
@@ -128,11 +134,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         return sizes;
     }
 
-    private Map<Integer, SizeStockEntity> loadStocks(String stockURL) throws FileNotFoundException {
+    private Map<Integer, SizeStockEntity> loadStocks(Scanner stockScanner) {
         Map<Integer, SizeStockEntity> stocks = new HashMap<>();
 
-        Scanner stockScanner = new Scanner(
-                new File(stockURL));
         while (stockScanner.hasNextLine()) {
             List<String> stockProperties = getRecordFromLine(stockScanner.nextLine());
             SizeStockEntity stock = new SizeStockEntity(Integer.parseInt(stockProperties.get(0)),

@@ -46,3 +46,9 @@ ITERACIÓN 1:
 
 
 ITERACIÓN 2:
+    En esta segunda iteración se ha añadido documentación al código y se ha realizado limpieza de algunas de las funciones
+    de test. En cuanto al algoritmo se presentaron ciertas mejoras en la anterior iteración. Aunque si bien es cierto que las
+    mejoras mencionadas mejorarían el orden de complejidad del algoritmo, nos obligaría a cambiar el comportamiento y el tipo de
+    retorno de las funciones del servicio y del repositorio, lo cual en mi opinión degradaría la capacidad de extensibilidad de 
+    la aplicación. A parte que si el ordenamiento lo llevamos al repositorio no se respectaría el enunciado. Como mejoras para una 
+    siguiente iteración diría que se puede mejorar la semántica de la implementación del servicio de producto.
