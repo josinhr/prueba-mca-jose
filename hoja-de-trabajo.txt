@@ -7,7 +7,8 @@ filtrado y ordenación usando TDD. Para ello usaremos la siguiente técnica:
     5. Refactorizamos el código y volvemos a empezar
 
 Vamos a ir realizando diversas iteraciones con el objetivo de poder aportar valor desde la primera iteración
-y poder ir realizando mejoras en el código progresivamente. Al algoritmo lo hemos llamado filterNonAviableAndOrderProducts.
+y poder ir realizando mejoras en el código progresivamente (se recomienda ver el histórico de commits). 
+Al algoritmo lo hemos llamado filterNonAviableAndOrderProducts.
 
 No considero la implementación del repositorio ni dentro de la complejidad del algoritmo ni dentro del objetivo principal de la prueba.
 Como se indica en el fichero de explicación, los ficheros CSV simplemente simulan las tablas de una BDD,
@@ -52,3 +53,7 @@ ITERACIÓN 2:
     retorno de las funciones del servicio y del repositorio, lo cual en mi opinión degradaría la capacidad de extensibilidad de 
     la aplicación. A parte que si el ordenamiento lo llevamos al repositorio no se respectaría el enunciado. Como mejoras para una 
     siguiente iteración diría que se puede mejorar la semántica de la implementación del servicio de producto.
+
+ITERACIÓN 3: 
+    Por último hemos intentado mejorar la semántica de la función de ordenación, filtrado y extracción de Ids, 
+    extrayendo en funciones el código complejo y poco verboso.

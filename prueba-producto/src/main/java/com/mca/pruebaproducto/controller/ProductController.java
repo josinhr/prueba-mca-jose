@@ -29,6 +29,6 @@ public class ProductController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Integer> getProducts() {
-        return productService.getOrderedAviableProcducts();
+        return productService.getOrderedAviableProducts();
     }
 }

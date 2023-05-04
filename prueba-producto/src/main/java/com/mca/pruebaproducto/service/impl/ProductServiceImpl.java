@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public List<Integer> getOrderedAviableProcducts() {
+    public List<Integer> getOrderedAviableProducts() {
         List<ProductEntity> products = productRepository.getAllProducts();
         List<Integer> aviableProducts = filterNonAviableAndOrderProducts(products);
         return aviableProducts;
@@ -35,22 +35,36 @@ public class ProductServiceImpl implements ProductService {
         if (products == null || products.isEmpty())
             return new LinkedList<>();
 
-        List<ProductEntity> aviableProducts = new LinkedList<>();
+        List<ProductEntity> aviableProducts = filterAviableProducts(products);
+        orderBySequenceListOfProducts(aviableProducts);
 
+        return getListOfProductIds(aviableProducts);
+    }
+
+    /**
+     * Se han extraido una serie de métodos que pretenden semantizar las funciones
+     * "complejas" usadas en el algoritmo. Cuando la aplicación escalara estos
+     * métodos
+     * podrían ser llevados a otro lugar como una clase utils, al model de
+     * productos, etc.
+     */
+    private void orderBySequenceListOfProducts(List<ProductEntity> aviableProducts) {
+        Collections.sort(aviableProducts, (p1, p2) -> p1.getSequence().compareTo(p2.getSequence()));
+    }
+
+    private List<ProductEntity> filterAviableProducts(List<ProductEntity> products) {
+        List<ProductEntity> aviableProducts = new LinkedList<>();
         for (ProductEntity product : products) {
             if (isProductAviable(product))
                 aviableProducts.add(product);
         }
-
-        return orderAndGetListOfProductIds(aviableProducts);
+        return aviableProducts;
     }
 
-    private List<Integer> orderAndGetListOfProductIds(List<ProductEntity> aviableProducts) {
-        Collections.sort(aviableProducts, (p1, p2) -> p1.getSequence().compareTo(p2.getSequence()));
+    private List<Integer> getListOfProductIds(List<ProductEntity> aviableProducts) {
 
-        List<Integer> orderedFilteredProducts = aviableProducts.stream().map(p -> p.getId())
+        return aviableProducts.stream().map(p -> p.getId())
                 .collect(Collectors.toList());
-        return orderedFilteredProducts;
     }
 
     /**

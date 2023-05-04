@@ -12,7 +12,7 @@ public interface ProductService {
      * 
      * @return aviable products Ids ordered by their sequence number.
      */
-    public abstract List<Integer> getOrderedAviableProcducts();
+    public abstract List<Integer> getOrderedAviableProducts();
 
     /**
      * Getting a list of products returns the aviable products Ids ordered by their
