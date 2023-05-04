@@ -34,3 +34,5 @@ cd ..
 docker-compose -f .\docker-componse.yml create
 docker-compose -f .\docker-componse.yml start
 ```
+
+La llamada a realizar es un GET a http://localhost:8080/api/products (simplemente copiándolo en el navegador ya funciona).
