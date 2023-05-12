@@ -2,39 +2,48 @@ package com.mca.pruebaproducto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Description;
 
 import com.mca.pruebaproducto.entity.ProductEntity;
 import com.mca.pruebaproducto.entity.ProductSizeEntity;
 import com.mca.pruebaproducto.entity.SizeStockEntity;
-import com.mca.pruebaproducto.service.ProductService;
+import com.mca.pruebaproducto.repository.ProductRepository;
+import com.mca.pruebaproducto.service.impl.ProductServiceImpl;
 
 @SpringBootTest
 public class ProductServiceTests {
 
-    @Autowired
-    private ProductService productService;
+    @Mock
+    private ProductRepository productRepository;
+
+    @InjectMocks
+    private ProductServiceImpl productService;
 
     @Test
     @Description("Case when the list of products is null")
     void filterNonAviableAndOrderProductsProductsIsNull() throws IOException {
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(null);
+        when(productRepository.getAllProducts()).thenReturn(new LinkedList<>());
+        List<Integer> productsIds = productService.getOrderedAviableProducts();
         assertTrue(productsIds != null && productsIds.isEmpty());
     }
 
     @Test
     @Description("Case when the list of products is empty")
     void filterNonAviableAndOrderProductsProductsIsEmpty() throws IOException {
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(new LinkedList<>());
-        assertTrue(productsIds != null && productsIds.isEmpty());
+
+        when(productRepository.getAllProducts()).thenReturn(new LinkedList<>());
+
+        List<Integer> productsIds = productService.getOrderedAviableProducts();
         assertTrue(productsIds != null && productsIds.isEmpty());
     }
 
@@ -46,7 +55,9 @@ public class ProductServiceTests {
         List<ProductEntity> products = new LinkedList<>();
         products.add(a);
 
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
+        when(productRepository.getAllProducts()).thenReturn(products);
+
+        List<Integer> productsIds = productService.getOrderedAviableProducts();
         assertTrue(productsIds.isEmpty());
 
     }
@@ -64,7 +75,9 @@ public class ProductServiceTests {
         List<ProductEntity> products = new LinkedList<>();
         products.add(a);
 
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
+        when(productRepository.getAllProducts()).thenReturn(products);
+
+        List<Integer> productsIds = productService.getOrderedAviableProducts();
         assertTrue(productsIds.isEmpty());
 
     }
@@ -85,13 +98,15 @@ public class ProductServiceTests {
         List<ProductEntity> products = new LinkedList<>();
         products.add(a);
 
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
+        when(productRepository.getAllProducts()).thenReturn(products);
+
+        List<Integer> productsIds = productService.getOrderedAviableProducts();
         assertTrue(productsIds.isEmpty());
 
     }
 
     @Test
-    @Description("Case when products two product with stock")
+    @Description("Case when products three product with stock")
     void filterNonAviableAndOrderProductsTwoStock() throws IOException {
 
         List<ProductEntity> products = new LinkedList<>();
@@ -103,7 +118,7 @@ public class ProductServiceTests {
         List<ProductSizeEntity> sizesa = new LinkedList<>();
         sizesa.add(pa);
 
-        ProductEntity a = new ProductEntity(0, 2);
+        ProductEntity a = new ProductEntity(0, 5);
         a.setSizes(sizesa);
         products.add(a);
 
@@ -114,15 +129,29 @@ public class ProductServiceTests {
         List<ProductSizeEntity> sizesb = new LinkedList<>();
         sizesb.add(pb);
 
-        ProductEntity b = new ProductEntity(1, 1);
+        ProductEntity b = new ProductEntity(1, 15);
         b.setSizes(sizesb);
         products.add(b);
 
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
+        SizeStockEntity sc = new SizeStockEntity(1, 1);
+
+        ProductSizeEntity pc = new ProductSizeEntity(1, 1, false, false);
+        pc.setStock(sc);
+        List<ProductSizeEntity> sizesc = new LinkedList<>();
+        sizesc.add(pc);
+
+        ProductEntity c = new ProductEntity(2, 10);
+        c.setSizes(sizesc);
+        products.add(c);
+
+        when(productRepository.getAllProducts()).thenReturn(products);
+
+        List<Integer> productsIds = productService.getOrderedAviableProducts();
         assertTrue(!productsIds.isEmpty());
-        assertEquals(2, productsIds.size());
-        assertEquals(1, productsIds.get(0));
-        assertEquals(0, productsIds.get(1));
+        assertEquals(3, productsIds.size());
+        assertEquals(0, productsIds.get(0));
+        assertEquals(2, productsIds.get(1));
+        assertEquals(1, productsIds.get(2));
 
     }
 
@@ -145,7 +174,9 @@ public class ProductServiceTests {
         List<ProductEntity> products = new LinkedList<>();
         products.add(a);
 
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
+        when(productRepository.getAllProducts()).thenReturn(products);
+
+        List<Integer> productsIds = productService.getOrderedAviableProducts();
         assertTrue(!productsIds.isEmpty());
         assertEquals(1, productsIds.size());
         assertEquals(3, productsIds.get(0));
@@ -172,7 +203,9 @@ public class ProductServiceTests {
         List<ProductEntity> products = new LinkedList<>();
         products.add(a);
 
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
+        when(productRepository.getAllProducts()).thenReturn(products);
+
+        List<Integer> productsIds = productService.getOrderedAviableProducts();
         assertTrue(productsIds.isEmpty());
 
     }
@@ -197,7 +230,9 @@ public class ProductServiceTests {
         List<ProductEntity> products = new LinkedList<>();
         products.add(a);
 
-        List<Integer> productsIds = productService.filterNonAviableAndOrderProducts(products);
+        when(productRepository.getAllProducts()).thenReturn(products);
+
+        List<Integer> productsIds = productService.getOrderedAviableProducts();
 
         assertTrue(!productsIds.isEmpty());
         assertEquals(1, productsIds.size());

@@ -57,3 +57,21 @@ ITERACIÓN 2:
 ITERACIÓN 3: 
     Por último hemos intentado mejorar la semántica de la función de ordenación, filtrado y extracción de Ids, 
     extrayendo en funciones el código complejo y poco verboso.
+
+ITERACIÓN 4:
+    - Deberías utilizar librerías externas para la extracción de datos de los csv, ya que ayuda a
+     que sea más ligero que el Scanner de Java. -> Hecho
+
+    - Se debería comprobar la salida, ya que si por algún casual algún dato no se devolviera el servicio siempre
+      devolvería 200 sin datos. -> Tengo algunas dudas sobre esta parte la verdad, alomejor se podría devolver un código
+      de error en caso que realmente se produciera un error, aunque realmente en el front sólo nos interesa si hay productos o no.
+
+    -Utilizar la lambda, ya que a partir de la jdk8 aparece la lambda como uno de los fuertes 
+     de java y reduce mucho el número de líneas a crear. -> He añadido varias lambdas
+
+    - ¿Por qué se crea una imagen subida a un repository de Docker y utilizas un docker compose para un solo servicio? 
+        -> En la entrevista con Jérémy estuvimos hablando de lo de la prueba, y me dijo que se pediría montarla en un 
+        microservicio, aunque luego en el enunciado no lo dice.
+
+    - Se han de revisar los test dado que se están probando los objetos del servicio no existen. -> Hecho
+    - No hay Mocks ni pruebas sobre los Repository de objetos. -> Hecho

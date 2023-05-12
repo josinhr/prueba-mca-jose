@@ -1,11 +1,30 @@
 package com.mca.pruebaproducto.entity;
 
-public class ProductSizeEntity {
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "id", "productId", "backSoon", "special" })
+public class ProductSizeEntity implements Serializable {
+
+    @JsonProperty("id")
     private Integer id;
+
+    @JsonProperty("productId")
     private Integer productId;
+
+    @JsonProperty("backSoon")
     private boolean backSoon;
+
+    @JsonProperty("special")
     private boolean special;
+
     private SizeStockEntity stock;
+
+    public ProductSizeEntity() {
+        super();
+    }
 
     public ProductSizeEntity(Integer id, Integer productId, boolean backSoon, boolean special) {
         this.id = id;

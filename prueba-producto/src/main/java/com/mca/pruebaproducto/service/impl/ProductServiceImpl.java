@@ -25,20 +25,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Integer> getOrderedAviableProducts() {
         List<ProductEntity> products = productRepository.getAllProducts();
-        List<Integer> aviableProducts = filterNonAviableAndOrderProducts(products);
-        return aviableProducts;
+        return filterNonAviableAndOrderProducts(products);
     }
 
-    @Override
-    public List<Integer> filterNonAviableAndOrderProducts(List<ProductEntity> products) {
+    /**
+     * Getting a list of products returns the aviable products Ids ordered by their
+     * sequence number.
+     * 
+     * @param products
+     * @return the aviable products Ids ordered by their sequence number.
+     */
+    private List<Integer> filterNonAviableAndOrderProducts(List<ProductEntity> products) {
 
         if (products == null || products.isEmpty())
             return new LinkedList<>();
 
         List<ProductEntity> aviableProducts = filterAviableProducts(products);
-        orderBySequenceListOfProducts(aviableProducts);
+        List<ProductEntity> orderedProducts = orderBySequenceListOfProducts(aviableProducts);
 
-        return getListOfProductIds(aviableProducts);
+        return getListOfProductIds(orderedProducts);
     }
 
     /**
@@ -48,21 +53,17 @@ public class ProductServiceImpl implements ProductService {
      * podrían ser llevados a otro lugar como una clase utils, al model de
      * productos, etc.
      */
-    private void orderBySequenceListOfProducts(List<ProductEntity> aviableProducts) {
-        Collections.sort(aviableProducts, (p1, p2) -> p1.getSequence().compareTo(p2.getSequence()));
+    private List<ProductEntity> orderBySequenceListOfProducts(List<ProductEntity> aviableProducts) {
+        List<ProductEntity> orderedProducts = new LinkedList<>(aviableProducts);
+        Collections.sort(orderedProducts, (p1, p2) -> p1.getSequence().compareTo(p2.getSequence()));
+        return orderedProducts;
     }
 
     private List<ProductEntity> filterAviableProducts(List<ProductEntity> products) {
-        List<ProductEntity> aviableProducts = new LinkedList<>();
-        for (ProductEntity product : products) {
-            if (isProductAviable(product))
-                aviableProducts.add(product);
-        }
-        return aviableProducts;
+        return products.stream().filter(this::isProductAviable).toList();
     }
 
     private List<Integer> getListOfProductIds(List<ProductEntity> aviableProducts) {
-
         return aviableProducts.stream().map(p -> p.getId())
                 .collect(Collectors.toList());
     }

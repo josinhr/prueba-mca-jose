@@ -1,12 +1,26 @@
 package com.mca.pruebaproducto.entity;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ProductEntity {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "id", "sequence" })
+public class ProductEntity implements Serializable {
+
+    @JsonProperty("id")
     private Integer id;
+
+    @JsonProperty("sequence")
     private Integer sequence;
+
     private List<ProductSizeEntity> sizes = new LinkedList<>();
+
+    public ProductEntity() {
+        super();
+    }
 
     public ProductEntity(Integer id, Integer sequence) {
         this.id = id;
